@@ -1,31 +1,31 @@
-const express= require('express')
-const noteModel = require('./Models/note.model')
-const cors = require('cors')
-const path = require('path')
+/**
+ * server ko create
+ */
 
+const express = require("express")
+const noteModel = require("./models/note.model")
+const cors = require("cors")
+const path = require("path")
 
 const app = express()
-app.use(express.json())
 app.use(cors())
-const publicPath = path.join(__dirname, "..", "public");
-app.use(express.static(publicPath));
+app.use(express.json())
+app.use(express.static("./public"))
 
 /**
  * - POST /api/notes
  * - create new note and save data in mongodb
  * - req.body = {title,description}
  */
-
-app.post("/api/notes", async (req, res)=>{
-    const {title, description} = req.body
+app.post('/api/notes', async (req, res) => {
+    const { title, description } = req.body
 
     const note = await noteModel.create({
-        title,
-        description
+        title, description
     })
 
     res.status(201).json({
-        message: "note created successfully!",
+        message: "note created successfully",
         note
     })
 })
@@ -34,13 +34,12 @@ app.post("/api/notes", async (req, res)=>{
  * - GET /api/notes
  * - Fetch all the notes data from mongodb and send them in the response
  */
-
-app.get("/api/notes", async (req, res)=>{
-    const note = await noteModel.find()
+app.get("/api/notes", async (req, res) => {
+    const notes = await noteModel.find()
 
     res.status(200).json({
-        message: "note fetched successfully!",
-        note
+        message: "Notes fetched successfully.",
+        notes
     })
 })
 
@@ -48,12 +47,13 @@ app.get("/api/notes", async (req, res)=>{
  * - DELETE /api/notes/:id
  * - Delete note with the id from req.params
  */
-app.delete("/api/notes/:id", async (req, res)=>{
+app.delete('/api/notes/:id', async (req, res) => {
     const id = req.params.id
+
     await noteModel.findByIdAndDelete(id)
 
     res.status(200).json({
-        message: "note deleted successfully!"
+        message: "Note deleted successfully."
     })
 })
 
@@ -62,35 +62,20 @@ app.delete("/api/notes/:id", async (req, res)=>{
  * - update the description of the note by id
  * - req.body = {description}
  */
-
-app.patch("/api/notes/:id", async (req, res)=>{
+app.patch('/api/notes/:id', async (req, res) => {
     const id = req.params.id
-    const {description} = req.body
+    const { description } = req.body
 
-    await noteModel.findByIdAndUpdate(id, {description})
+    await noteModel.findByIdAndUpdate(id, { description })
 
     res.status(200).json({
-        message: "note Updated successfully!"
+        message: "Note updated successfully."
     })
+
 })
 
-// app.use('*name', (req, res)=>{
-//     res.sendFile(path.join(__dirname,"..", "/public/index.html"))
-// })
 
 
-// SPA fallback
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(publicPath, "index.html"));
-// });
-
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../public/index.html"));
-// });
-
-app.get('/*all', (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "public", "index.html"));
-});
 
 
 module.exports = app
