@@ -3,7 +3,7 @@
  */
 
 const express = require("express")
-const noteModel = require("./models/note.model")
+const noteModel = require("./Models/note.model")
 const cors = require("cors")
 const path = require("path")
 
