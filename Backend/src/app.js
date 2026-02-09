@@ -10,8 +10,8 @@ const path = require("path")
 const app = express()
 app.use(cors())
 app.use(express.json())
-const publicPath = path.join(__dirname, "public");  // ← important!
-app.use(express.static(publicPath));
+// const publicPath = path.join(__dirname, "public");  // ← important!
+app.use(express.static('./public'));
 
 /**
  * - POST /api/notes
@@ -36,11 +36,11 @@ app.post('/api/notes', async (req, res) => {
  * - Fetch all the notes data from mongodb and send them in the response
  */
 app.get("/api/notes", async (req, res) => {
-    const notes = await noteModel.find()
+    const note = await noteModel.find()
 
     res.status(200).json({
         message: "Notes fetched successfully.",
-        notes
+        note
     })
 })
 
@@ -75,9 +75,9 @@ app.patch('/api/notes/:id', async (req, res) => {
 
 })
 
-app.get('/*path', (req, res) => {
-    res.sendFile(path.join(publicPath, "index.html"));
-});
+// app.get('*name', (req, res) => {
+//     res.sendFile(path.join(publicPath, "index.html"));
+// });
 
 
 
