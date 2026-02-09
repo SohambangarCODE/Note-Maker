@@ -6,7 +6,7 @@ function App() {
   const [ notes, setNotes ] = useState([])
 
   function fetchNotes() {
-    axios.get('/api/notes')
+    axios.get('http://localhost:3000/api/notes')
   .then((res)=>{
     setNotes(res.data.note)
   })
@@ -21,7 +21,7 @@ function App() {
     const title = e.target.title.value
     const description = e.target.description.value
 
-    axios.post('/api/notes',{
+    axios.post('http://localhost:3000/api/notes',{
       title:title,
       description:description
     })
@@ -32,7 +32,7 @@ function App() {
   }
 
   function handleDeleteNote(id){
-    axios.delete(`/api/notes/${id}`)
+    axios.delete(`http://localhost:3000/api/notes/${id}`)
     .then((res)=>{
       fetchNotes()
     })
@@ -40,7 +40,7 @@ function App() {
 
   function handleUpdateNote(id){
     const newDescription = prompt("enter new description")
-    axios.patch(`/api/notes/${id}`,{
+    axios.patch(`http://localhost:3000/api/notes/${id}`,{
       description:newDescription
     })
     .then((res)=>{
